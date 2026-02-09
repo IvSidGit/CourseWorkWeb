@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/head :: head}">
+    <title>Гитарные песни - Главная</title>
+</head>
+<body>
+<div th:replace="fragments/navbar"></div>
+
+<main class="container">
+    <!-- Hero секция -->
+    <section class="hero">
+        <hgroup>
+            <h1>🎸 Гитарные песни</h1>
+            <h2>Крупнейшая база текстов песен с аккордами для гитары</h2>
+        </hgroup>
+    </section>
+
+    <!-- Статистика сайта -->
+    <section class="stats">
+        <h2>📊 Статистика сайта</h2>
+        <div class="grid">
+            <!-- Переменные из контроллера: -->
+            <div class="stat-card">
+                <h3 th:text="${stats.songsCount}">0</h3>
+                <p>Песен в базе</p>
+            </div>
+            <div class="stat-card">
+                <h3 th:text="${stats.artistsCount}">0</h3>
+                <p>Артистов</p>
+            </div>
+            <div class="stat-card">
+                <h3 th:text="${stats.usersCount}">0</h3>
+                <p>Пользователей</p>
+            </div>
+            <div class="stat-card">
+                <h3 th:text="${#numbers.formatInteger(stats.totalViews, 0, 'POINT')}">0</h3>
+                <p>Всего просмотров</p>
+            </div>
+            <div class="stat-card">
+                <h3 th:text="${#numbers.formatDecimal(stats.averageRating, 1, 2)}">0.0</h3>
+                <p>Средний рейтинг</p>
+            </div>
+            <div class="stat-card">
+                <h3 th:text="${stats.totalComments}">0</h3>
+                <p>Комментариев</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Быстрые действия -->
+    <section class="quick-actions">
+        <h2>🚀 Быстрые действия</h2>
+        <div class="grid">
+            <a href="/songs/all" role="button" class="secondary">Все песни</a>
+            <a href="/artists/all" role="button" class="secondary">Все артисты</a>
+            <a th:href="@{/songs/add}" sec:authorize="isAuthenticated()" role="button" class="contrast">
+                Добавить песню
+            </a>
+            <a href="/songs/random" role="button" class="outline">Случайная песня</a>
+        </div>
+    </section>
+
+    <!-- Топ контент -->
+    <div class="grid">
+        <!-- Самые популярные песни -->
+        <section>
+            <h2>🔥 Популярные песни</h2>
+            <div th:each="song : ${topPopularSongs}">
+                <article class="song-preview">
+                    <h4>
+                        <a th:href="@{/songs/song-details/{slug}(slug=${song.slug})}"
+                           th:text="${song.title}"></a>
+                    </h4>
+                    <p>
+                        <small>
+                            <span th:if="${song.artist != null}">
+                                <a th:href="@{/artists/artist-details/{slug}(slug=${song.artist.slug})}"
+                                   th:text="${song.artist.name}"></a> •
+                            </span>
+                            <span th:text="${song.viewsCount} + ' просмотров'"></span> •
+                            <span th:text="${song.ratingCount} + ' оценок'"></span>
+                        </small>
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Последние добавленные -->
+        <section>
+            <h2>🆕 Новые песни</h2>
+            <div th:each="song : ${recentSongs}">
+                <article class="song-preview">
+                    <h4>
+                        <a th:href="@{/songs/song-details/{slug}(slug=${song.slug})}"
+                           th:text="${song.title}"></a>
+                    </h4>
+                    <p>
+                        <small>
+                            <span th:if="${song.artist != null}">
+                                 <a th:href="@{/artists/artist-details/{slug}(slug=${song.artist.slug})}"
+                                    th:text="${song.artist.name}"></a> •
+                            </span>
+                            <span th:text="${#temporals.format(song.createdAt, 'dd.MM.yyyy')}"></span>
+                        </small>
+                    </p>
+                </article>
+            </div>
+        </section>
+    </div>
+
+    <!-- Последние комментарии -->
+    <section th:if="${!recentComments.isEmpty()}">
+        <h2>💬 Последние комментарии</h2>
+        <div th:each="comment : ${recentComments}">
+            <article class="comment-preview">
+                <p>
+                    <strong th:text="${comment.user.username}"></strong> к песне
+                    <a th:href="@{/songs/song-details/{slug}(slug=${comment.song.slug})}"
+                       th:text="'«' + ${comment.song.title} + '»'"></a>:
+                </p>
+                <blockquote th:text="${comment.content}"></blockquote>
+                <small th:text="${#temporals.format(comment.createdAt, 'dd.MM.yyyy HH:mm')}"></small>
+            </article>
+        </div>
+    </section>
+
+    <!-- Call to action -->
+    <section class="cta">
+        <h2>🎶 Начните играть прямо сейчас!</h2>
+        <p>Выберите песню, аккорды которой хотите выучить, или добавьте свою любимую песню в нашу базу.</p>
+        <a href="/songs/all" role="button">Найти песню</a>
+        <a th:href="@{/songs/add}" sec:authorize="isAuthenticated()" role="button" class="contrast">
+            Добавить песню
+        </a>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<style>
+    /* Стили для главной страницы */
+    .hero {
+        text-align: center;
+        padding: 3rem 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .hero h2 {
+        font-size: 1.5rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+    }
+
+    .stats {
+        margin: 3rem 0;
+    }
+
+    .stat-card {
+        text-align: center;
+        padding: 1.5rem;
+        background: var(--card-background-color);
+        border-radius: 0.5rem;
+        border: 1px solid var(--card-border-color);
+    }
+
+    .stat-card h3 {
+        font-size: 2.5rem;
+        margin: 0;
+        color: var(--primary);
+    }
+
+    .stat-card p {
+        margin: 0.5rem 0 0;
+        color: var(--muted-color);
+    }
+
+    .song-preview, .artist-card, .comment-preview {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background: var(--card-background-color);
+        border-radius: 0.5rem;
+        border-left: 4px solid var(--primary);
+    }
+
+    .user-section {
+        background: var(--card-background-color);
+        padding: 2rem;
+        border-radius: 1rem;
+        margin: 2rem 0;
+    }
+
+    .quick-actions {
+        margin: 2rem 0;
+    }
+
+    .cta {
+        text-align: center;
+        padding: 3rem 1rem;
+        background: var(--card-background-color);
+        border-radius: 1rem;
+        margin: 3rem 0;
+    }
+
+    .cta h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .cta p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        opacity: 0.8;
+    }
+</style>
+</body>
+</html>

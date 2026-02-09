@@ -1,0 +1,26 @@
+<!-- comment-add.html - МИНИМАЛЬНЫЙ РАБОЧИЙ ВАРИАНТ -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"></head>
+<body>
+<div th:replace="~{fragments/navbar}"></div>
+
+<div style="padding: 2rem;">
+  <h2>Добавить комментарий</h2>
+
+  <form th:action="@{/song-comments/add}" method="post">
+    <input type="hidden" name="songSlug" th:value="${commentModel.songSlug}">
+    <input type="hidden" name="username" th:value="${commentModel.username}">
+
+    <label>Ваш комментарий:</label><br>
+    <textarea name="content" rows="6" cols="50"></textarea>
+    <br><br>
+
+    <button type="submit">Отправить</button>
+    <a th:href="@{/songs/song-details/{slug}(slug=${commentModel.songSlug})}">Отмена</a>
+  </form>
+</div>
+
+<footer th:replace="~{fragments/footer}"></footer>
+</body>
+</html>

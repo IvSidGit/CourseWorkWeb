@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head"/>
+<body>
+<div th:replace="fragments/navbar"></div>
+<main class="container">
+    <hgroup>
+        <h1>Профиль пользователя</h1>
+        <p>Информация о вашей учетной записи</p>
+    </hgroup>
+    <article class="card">
+        <div class="grid">
+            <div th:object="${user}">
+                <h2 th:text="*{fullName}"></h2>
+                <p><strong>Логин:</strong> <span th:text="*{username}"></span></p>
+                <p><strong>Email:</strong> <span th:text="*{email}"></span></p>
+                <p><strong>Возраст:</strong> <span th:text="*{age}"></span></p>
+                <div>
+                    <strong>Роли:</strong>
+                    <div sec:authentication="principal.authorities" style="margin-top: 0.5rem;"></div>
+                </div>
+                <br>
+                <p><strong>Песни добавленные вами:</strong></p>
+                <div th:if="${#lists.isEmpty(user.createdSongs)}">
+                    <p class="text-muted" style="font-style: italic; color: #6c757d;">
+                        Вы еще не добавляли песни
+                    </p>
+                </div>
+
+
+                <ul th:unless="${#lists.isEmpty(user.createdSongs)}" class="song-list">
+                    <li th:each="song : *{createdSongs}">
+                        <a th:href="@{/songs/song-details/{slug}(slug=${song.slug})}" th:text="${song.title}"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="text-center">
+                <img src="/pic/user.png" alt="Профиль пользователя"
+                     style="width: 100%; max-width: 300px; border-radius: var(--pico-border-radius);">
+            </div>
+        </div>
+    </article>
+</main>
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<div th:replace="fragments/navbar"></div>
+<main class="container">
+    <article style="max-width: 900px; margin: 0 auto;">
+        <hgroup>
+            <h1>Добавление песни</h1>
+            <p>Заполните информацию о песне</p>
+        </hgroup>
+        <form th:action="@{/songs/add}"
+              th:method="post"
+              th:object="${songModel}">
+
+
+            <label for="title">
+                Название
+                <input th:field="*{title}"
+                       th:errorclass="is-invalid"
+                       type="text"
+                       id="title"
+                       placeholder="Введите название песни"
+                       required/>
+                <small th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></small>
+            </label>
+
+            <label for="artistId">
+                Исполнитель
+                <select id="artistId" name="artistId" th:field="*{artistId}">
+                    <option value="">Выберите исполнителя...</option>
+                    <option th:each="artist : ${availableArtists}"
+                            th:value="${artist.id}"
+                            th:text="${artist.name}"></option>
+                </select>
+                <small th:if="${#fields.hasErrors('artistId')}" th:errors="*{artistId}" class="text-danger"></small>
+            </label>
+
+            <label for="genre">
+                Жанр
+                <input th:field="*{genre}"
+                       th:errorclass="is-invalid"
+                       type="text"
+                       id="genre"
+                       placeholder="Введите жанр"
+                       />
+                <small th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}" class="text-danger"></small>
+            </label>
+
+            <label for="capo">
+                Каподастр на ладу под номером:
+                <input th:field="*{capo}"
+                       th:errorclass="is-invalid"
+                       type="number"
+                       step="1"
+                       min="0"
+                       max="14"
+                       id="capo"
+                       placeholder="Введите номер лада"
+                       required/>
+                <small th:if="${#fields.hasErrors('capo')}" th:errors="*{capo}" class="text-danger"></small>
+            </label>
+
+            <label for="chordsList">
+                Аккорды (через запятую)
+                <input th:field="*{chordsList}"
+                       type="text"
+                       id="chordsList"
+                       placeholder="Например: Am, C, G, D, F"
+                       />
+                <small>Введите аккорды через запятую. Например: Am, C, G, D</small>
+                <small th:if="${#fields.hasErrors('chordsList')}" th:errors="*{chordsList}" class="text-danger"></small>
+            </label>
+
+            <label for="content">
+                Текст песни
+                <textarea th:field="*{content}"
+                          th:errorclass="is-invalid"
+                          id="content"
+                          rows="8"
+                          placeholder="Введите текст песни..."
+                          required></textarea>
+                <small th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-danger"></small>
+            </label>
+
+            <button type="submit">Добавить песню</button>
+        </form>
+    </article>
+</main>
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

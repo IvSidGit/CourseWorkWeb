@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<div th:replace="fragments/navbar"></div>
+<main class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <hgroup style="margin: 0;">
+            <h1>Все песни</h1>
+            <p>Просмотрите всех песен системы</p>
+        </hgroup>
+        <button th:if="${#authorization.expression('isAuthenticated()')}"
+                onclick="window.location.href='/songs/add'"
+                style="margin: 0; flex-shrink: 0;">
+            Добавить песню
+        </button>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div th:each="s : ${allSongs}" class="card" style="width: 100%;">
+            <h3 th:text="${s.title} + '(' + ${s.slug} +')' "></h3>
+            <p><strong>Жанр:</strong> <span th:text="${s.genre}"></span></p>
+            <p><strong>Аккорды:</strong>
+                <span th:each="chord, stat : ${s.chordsList}">
+                    <span th:text="${chord}"></span>
+                    <span th:unless="${stat.last}">, </span>
+        </span>
+            </p>
+            <p><strong>Рейтинг:</strong>
+                <span th:if="${s.ratingCount > 0}"
+                      th:text="${#numbers.formatDecimal(
+              s.ratingTotal / s.ratingCount,
+              1, 2)} + '⭐'">
+        </span>
+                <span th:unless="${s.ratingCount > 0}">Нет оценок</span>
+            </p>
+            <p><strong>Дата создания:</strong> <span
+                    th:text="${#temporals.format(s.createdAt, 'dd.MM.yyyy, HH:mm')}"></span></p>
+            <a th:href="@{/songs/song-details/{name}(name=${s.slug})}"
+               role="button"
+               class="outline">
+                Подробнее
+            </a>
+        </div>
+    </div>
+
+    <p th:if="${#lists.isEmpty(allUsers)}" class="text-center">
+        <em>Пользователи не найдены. Добавьте новых пользователей, чтобы начать!</em>
+    </p>
+</main>
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>
