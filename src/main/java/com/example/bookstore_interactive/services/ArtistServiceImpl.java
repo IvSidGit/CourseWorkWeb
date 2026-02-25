@@ -120,6 +120,14 @@ public class ArtistServiceImpl implements ArtistService {
         return artistRepository.getTotalArtistsCount();
     }
 
+    @Override
+    public List<ShowArtistInfoDto> searchArtistsByName(String name) {
+        log.debug("Поиск песен по названию: {}", name);
+        return artistRepository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(song -> mapper.map(song, ShowArtistInfoDto.class))
+                .collect(Collectors.toList());
+    }
 
 
 }

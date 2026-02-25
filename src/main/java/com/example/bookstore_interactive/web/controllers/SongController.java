@@ -190,4 +190,14 @@ public class SongController {
 
         return "redirect:/songs/all";
     }
+
+    @GetMapping("/search")
+    public String searchSongs(@RequestParam(required = false) String query, Model model) {
+        if (query != null && !query.isEmpty()) {
+            model.addAttribute("searchResults",
+                    songRepository.findByTitleContainingIgnoreCase(query));
+            model.addAttribute("searchQuery", query);
+        }
+        return "songs-search-results";
+    }
 }

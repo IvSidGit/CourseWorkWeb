@@ -1,6 +1,7 @@
 package com.example.bookstore_interactive.web.controllers;
 
 import com.example.bookstore_interactive.dto.artist.AddArtistDto;
+import com.example.bookstore_interactive.dto.artist.ShowArtistInfoDto;
 import com.example.bookstore_interactive.services.interfaces.ArtistService;
 import com.example.bookstore_interactive.services.interfaces.SongService;
 import jakarta.validation.Valid;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -79,6 +82,17 @@ public class ArtistController {
         log.info("Артист удален через контроллер: {}", artistSlug);
 
         return "redirect:/artists/all";
+    }
+
+    @GetMapping("/search")
+    public String searchArtists(@RequestParam(required = false) String query, Model model) {
+        if (query != null && !query.isEmpty()) {
+            List<ShowArtistInfoDto> results = artistService.searchArtistsByName(query);
+            model.addAttribute("searchResults", results);
+            model.addAttribute("searchQuery", query);
+            model.addAttribute("resultCount", results.size());
+        }
+        return "artists-search-results";
     }
 
 }

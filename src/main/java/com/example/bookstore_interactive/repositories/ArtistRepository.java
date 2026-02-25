@@ -1,6 +1,7 @@
 package com.example.bookstore_interactive.repositories;
 
 import com.example.bookstore_interactive.models.entities.Artist;
+import com.example.bookstore_interactive.models.entities.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,6 @@ public interface ArtistRepository extends JpaRepository<Artist, String> {
     @Modifying
     @Transactional
     void deleteById(String artistId);
+
+    List<Artist> findByNameContainingIgnoreCase(String name);
 }

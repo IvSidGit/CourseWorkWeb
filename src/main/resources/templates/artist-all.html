@@ -10,6 +10,11 @@
             <p>Просмотрите всех артистов системы</p>
         </hgroup>
 
+        <form th:action="@{/artists/search}" method="get" style="display: inline;">
+            <input type="text" name="query" placeholder="Поиск артистов..."
+                   style="padding: 0.3rem; border-radius: 4px;">
+            <button type="submit" class="outline" style="padding: 0.3rem 0.8rem;">🔍</button>
+        </form>
         <button th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'') or hasRole(''ROLE_MODERATOR'')')}"
                 onclick="window.location.href='/artists/add'"
                 style="margin: 0; flex-shrink: 0;">

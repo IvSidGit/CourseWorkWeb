@@ -9,11 +9,18 @@
             <h1>Все песни</h1>
             <p>Просмотрите всех песен системы</p>
         </hgroup>
+
+        <form th:action="@{/songs/search}" method="get" style="display: inline;">
+            <input type="text" name="query" placeholder="Поиск песен..."
+                   style="padding: 0.3rem; border-radius: 4px;">
+            <button type="submit" class="outline" style="padding: 0.3rem 0.8rem;">🔍</button>
+        </form>
         <button th:if="${#authorization.expression('isAuthenticated()')}"
                 onclick="window.location.href='/songs/add'"
                 style="margin: 0; flex-shrink: 0;">
             Добавить песню
         </button>
+
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 1rem;">

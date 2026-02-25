@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"/>
+<body>
+<div th:replace="fragments/navbar"></div>
+
+<main class="container">
+  <hgroup>
+    <h1>Результаты поиска</h1>
+    <p th:if="${searchQuery}">По запросу: <strong>"[[${searchQuery}]]"</strong></p>
+  </hgroup>
+
+  <!-- Если результатов нет -->
+  <div th:if="${searchResults == null or searchResults.isEmpty()}">
+    <article class="card" style="text-align: center; padding: 3rem;">
+      <p style="font-size: 1.5rem; margin-bottom: 1rem;">😕</p>
+      <p style="font-size: 1.2rem; color: #666;">Ничего не найдено</p>
+      <p>Попробуйте изменить поисковый запрос</p>
+      <a th:href="@{/songs/all}" class="button" style="margin-top: 1rem;">Вернуться к списку песен</a>
+    </article>
+  </div>
+
+  <!-- Если есть результаты -->
+  <div th:if="${searchResults != null and !searchResults.isEmpty()}">
+    <p>Найдены песни: </p>
+
+    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem;">
+      <div th:each="song : ${searchResults}" class="card">
+        <h3 th:text="${song.title}"></h3>
+        <p><strong>Исполнитель:</strong>
+          <span th:if="${song.artist != null}" th:text="${song.artist.name}"></span>
+          <span th:if="${song.artist == null}">Не указан</span>
+        </p>
+        <p><strong>Жанр:</strong>
+          <span th:text="${song.genre != null ? song.genre : 'Не указан'}"></span>
+        </p>
+        <p><strong>Рейтинг:</strong>
+          <span th:if="${song.ratingCount > 0}"
+                th:text="${#numbers.formatDecimal(song.ratingTotal / song.ratingCount, 1, 2)} + '⭐'">
+    </span>
+          <span th:unless="${song.ratingCount > 0}">Нет оценок</span>
+        </p>
+        <a th:href="@{/songs/song-details/{slug}(slug=${song.slug})}"
+           role="button"
+           class="outline">
+          Подробнее
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

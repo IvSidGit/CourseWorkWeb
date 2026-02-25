@@ -15,4 +15,5 @@ public interface ArtistService {
 
     Long getTotalArtistsCount();
 
+    List<ShowArtistInfoDto> searchArtistsByName(String name);
 }
