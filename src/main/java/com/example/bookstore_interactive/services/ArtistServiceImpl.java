@@ -3,9 +3,7 @@ package com.example.bookstore_interactive.services;
 import com.example.bookstore_interactive.dto.artist.*;
 import com.example.bookstore_interactive.models.entities.Artist;
 import com.example.bookstore_interactive.models.entities.Song;
-import com.example.bookstore_interactive.models.entities.SongComment;
 import com.example.bookstore_interactive.models.exceptions.ArtistNotFoundException;
-import com.example.bookstore_interactive.models.exceptions.SongCommentNotFoundException;
 import com.example.bookstore_interactive.repositories.ArtistRepository;
 import com.example.bookstore_interactive.repositories.SongRepository;
 import com.example.bookstore_interactive.services.interfaces.ArtistService;
@@ -16,7 +14,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

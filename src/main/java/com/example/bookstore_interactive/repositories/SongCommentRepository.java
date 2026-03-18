@@ -1,6 +1,5 @@
 package com.example.bookstore_interactive.repositories;
 
-import com.example.bookstore_interactive.models.entities.Song;
 import com.example.bookstore_interactive.models.entities.SongComment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,13 +21,6 @@ public interface SongCommentRepository extends JpaRepository<SongComment, String
     @Transactional
     void deleteById(String commentId);
     Optional<SongComment> findById(String commentId);
-
-    // Удаление комментариев пользователя (при удалении пользователя)
-    void deleteByUserId(String userId);
-
-    // Используйте JOIN FETCH для загрузки связанных сущностей
-    @Query("SELECT c FROM SongComment c JOIN FETCH c.user u ORDER BY c.createdAt DESC")
-    List<SongComment> findAllWithUser();
 
     // Или если вам нужны комментарии для конкретной песни
     @Query("SELECT c FROM SongComment c JOIN FETCH c.user u WHERE c.song.id = :songId ORDER BY c.createdAt DESC")

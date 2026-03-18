@@ -1,7 +1,6 @@
 package com.example.bookstore_interactive.repositories;
 
 import com.example.bookstore_interactive.models.entities.Song;
-import com.example.bookstore_interactive.models.entities.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,13 +64,6 @@ public interface SongRepository extends JpaRepository<Song, String> {
     @Transactional
     @Query("UPDATE Song s SET s.viewsCount = s.viewsCount + 1 WHERE s.id = :songId")
     int incrementViewsCount(@Param("songId") String songId);
-
-    @Query(value = "SELECT rating_count FROM songs WHERE slug= :songSlug", nativeQuery = true)
-    int getRatingCount(@Param("songSlug") String songSlug);
-
-    @Query(value = "SELECT rating_total FROM songs WHERE slug= :songSlug", nativeQuery = true)
-    int getRatingTotal(@Param("songSlug") String songSlug);
-
 
 
     List<Song> findByTitleContainingIgnoreCase(String title);

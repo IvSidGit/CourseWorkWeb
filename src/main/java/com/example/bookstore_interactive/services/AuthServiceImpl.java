@@ -1,7 +1,6 @@
 package com.example.bookstore_interactive.services;
 
 import com.example.bookstore_interactive.dto.song.ShowSongInfoDto;
-import com.example.bookstore_interactive.dto.user.ShowUserInfoDto;
 import com.example.bookstore_interactive.dto.user.UserRegistrationDto;
 import com.example.bookstore_interactive.models.entities.User;
 import com.example.bookstore_interactive.models.enums.UserRoles;

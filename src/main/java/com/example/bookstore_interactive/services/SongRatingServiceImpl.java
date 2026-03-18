@@ -5,23 +5,17 @@ import com.example.bookstore_interactive.dto.rating.RatingDto;
 import com.example.bookstore_interactive.models.entities.Song;
 import com.example.bookstore_interactive.models.entities.SongRating;
 import com.example.bookstore_interactive.models.entities.User;
-import com.example.bookstore_interactive.models.exceptions.SongNotFoundException;
 import com.example.bookstore_interactive.repositories.SongRatingRepository;
 import com.example.bookstore_interactive.repositories.SongRepository;
 import com.example.bookstore_interactive.repositories.UserRepository;
 import com.example.bookstore_interactive.services.interfaces.SongRatingService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -90,38 +84,11 @@ public class SongRatingServiceImpl implements SongRatingService {
         return modelMapper.map(rating, RatingDto.class);
     }
 
-    @Override
-    public Page<RatingDto> getUserRatings(String userId, Pageable pageable) {
-        return null;
-    }
-
-//    @Override
-//    public Page<RatingDto> getUserRatings(String userId, Pageable pageable) {
-//        return songRatingRepository.findByUserId(userId, pageable)
-//                .map(this::convertToRatingDto);
-//    }
-
-    @Override
-    public Double getAverageRatingForSong(String songId) {
-        Double avg = songRatingRepository.getAverageRatingBySongId(songId);
-        return avg != null ? Math.round(avg * 10.0) / 10.0 : 0.0;
-    }
 
     @Override
     public boolean hasUserRatedSong(String songId, String userId) {
         return songRatingRepository.existsBySongIdAndUserId(songId, userId);
     }
-
-    @Override
-    public Page<RatingDto> getRatingsForSong(String songId, Pageable pageable) {
-        return null;
-    }
-
-//    @Override
-//    public Page<RatingDto> getRatingsForSong(String songId, Pageable pageable) {
-//        return songRatingRepository.findBySongId(songId)
-//                .map(this::convertToRatingDto);
-//    }
 
     @Override
     public void deleteRating(String songId, String userId) {
@@ -138,38 +105,4 @@ public class SongRatingServiceImpl implements SongRatingService {
         songRepository.save(song);
         songRatingRepository.delete(rating);
     }
-
-    @Override
-    public Long getRatingCountForSong(String songId) {
-        return songRatingRepository.countBySongId(songId);
-    }
-
-    @Override
-    public List<Integer> getRatingDistribution(String songId) {
-        List<SongRating> ratings = songRatingRepository.findBySongId(songId);
-
-        // Инициализируем массив для распределения по звездам (1-5)
-        Integer[] distribution = new Integer[5];
-        Arrays.fill(distribution, 0);
-
-        for (SongRating rating : ratings) {
-            int stars = rating.getRating();
-            if (stars >= 1 && stars <= 5) {
-                distribution[stars - 1]++;
-            }
-        }
-
-        return Arrays.asList(distribution);
-    }
-
-//    private RatingDto convertToRatingDto(SongRating rating) {
-//        RatingDto dto = modelMapper.map(rating, RatingDto.class);
-//
-//        // Дополнительные поля
-//        dto.setSongTitle(rating.getSong().getTitle());
-//        dto.setSongSlug(rating.getSong().getSlug());
-//        dto.setUsername(rating.getUser().getUsername());
-//
-//        return dto;
-//    }
 }

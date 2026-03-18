@@ -22,14 +22,11 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final SongRepository songRepository;
     private final ModelMapper mapper;
 
     public UserServiceImpl(UserRepository userRepository,
-                             SongRepository songRepository,
                              ModelMapper mapper) {
         this.userRepository = userRepository;
-        this.songRepository = songRepository;
         this.mapper = mapper;
         log.info("UserServiceImpl инициализирован");
     }
@@ -76,33 +73,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long getTotalUsersCount() {
         return userRepository.getTotalUsersCount();
-    }
-
-
-
-    @Override
-    public User getUserById(String id) {
-        return null;
-    }
-
-    @Override
-    public User getUserByUsername(String username) {
-        return null;
-    }
-
-    @Override
-    public User getUserByEmail(String email) {
-        return null;
-    }
-
-    @Override
-    public User updateUser(String userId, User updatedUser) {
-        return null;
-    }
-
-    @Override
-    public void deleteUser(String userId) {
-
     }
 
 }

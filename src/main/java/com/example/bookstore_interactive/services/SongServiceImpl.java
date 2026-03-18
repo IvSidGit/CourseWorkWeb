@@ -1,15 +1,11 @@
 package com.example.bookstore_interactive.services;
 
-import com.example.bookstore_interactive.dto.artist.AddArtistDto;
-import com.example.bookstore_interactive.dto.artist.ShowArtistInfoDto;
-import com.example.bookstore_interactive.dto.artist.ShowDetailedArtistInfoDto;
 import com.example.bookstore_interactive.dto.song.AddSongDto;
 import com.example.bookstore_interactive.dto.song.ShowDetailedSongInfoDto;
 import com.example.bookstore_interactive.dto.song.ShowSongInfoDto;
 import com.example.bookstore_interactive.models.entities.Artist;
 import com.example.bookstore_interactive.models.entities.Song;
 import com.example.bookstore_interactive.models.entities.User;
-import com.example.bookstore_interactive.models.exceptions.ArtistNotFoundException;
 import com.example.bookstore_interactive.models.exceptions.SongNotFoundException;
 import com.example.bookstore_interactive.repositories.ArtistRepository;
 import com.example.bookstore_interactive.repositories.SongCommentRepository;
@@ -20,13 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -163,14 +155,6 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    @Transactional
-    public void incrementViews(String songId) {
-        log.debug("Увеличение счетчика просмотров для песни с ID: {}", songId);
-        songRepository.incrementViewsCount(songId);
-    }
-
-
-    @Override
     public Long getTotalSongsCount() {
         return songRepository.count();
     }
@@ -200,88 +184,4 @@ public class SongServiceImpl implements SongService {
                 .map(song -> mapper.map(song, ShowDetailedSongInfoDto.class))
                 .toList();
     }
-
-
-
-
-    @Override
-    public ShowDetailedSongInfoDto addSong(AddSongDto songDto, String userId) {
-        return null;
-    }
-
-    @Override
-    public ShowSongInfoDto getSongBySlug(String slug) {
-        return null;
-    }
-
-    @Override
-    public ShowDetailedSongInfoDto getSongById(String id) {
-        return null;
-    }
-
-    @Override
-    public Page<ShowDetailedSongInfoDto> searchSongsByTitle(String title, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public Page<ShowDetailedSongInfoDto> searchSongsByArtist(String artistName, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public Page<ShowDetailedSongInfoDto> searchSongsByGenre(String genre, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public Page<ShowDetailedSongInfoDto> searchSongsByChord(String chord, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public Page<ShowDetailedSongInfoDto> searchSongs(String searchTerm, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public Page<ShowDetailedSongInfoDto> getSongsByUser(String userId, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public Page<ShowDetailedSongInfoDto> getTopRatedSongs(Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public Page<ShowDetailedSongInfoDto> getMostViewedSongs(Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public Page<ShowDetailedSongInfoDto> getNewestSongs(Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public ShowDetailedSongInfoDto updateSong(String songId, AddSongDto songDto, String userId) {
-        return null;
-    }
-
-    @Override
-    public void changeSongStatus(String songId, String status, String userId) {
-
-    }
-
-    @Override
-    public boolean songExistsBySlug(String slug) {
-        return false;
-    }
-
-    @Override
-    public Page<ShowDetailedSongInfoDto> getSongsByChords(List<String> chords, Pageable pageable) {
-        return null;
-    }
-
 }

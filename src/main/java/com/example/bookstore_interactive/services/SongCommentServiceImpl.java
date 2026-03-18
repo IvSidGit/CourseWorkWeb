@@ -1,9 +1,7 @@
 package com.example.bookstore_interactive.services;
 
-import com.example.bookstore_interactive.dto.artist.AddArtistDto;
 import com.example.bookstore_interactive.dto.comment.AddCommentDto;
 import com.example.bookstore_interactive.dto.comment.CommentDto;
-import com.example.bookstore_interactive.models.entities.Artist;
 import com.example.bookstore_interactive.models.entities.Song;
 import com.example.bookstore_interactive.models.entities.SongComment;
 import com.example.bookstore_interactive.models.entities.User;
@@ -17,9 +15,7 @@ import com.example.bookstore_interactive.services.interfaces.SongCommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,47 +77,11 @@ public class SongCommentServiceImpl implements SongCommentService {
                 commentDTO.getSongSlug(), commentDTO.getUsername());
     }
 
-    public void addCommentBySlug(String songSlug, String content, String username) {
-        // Находим песню по slug
-        Song song = songRepository.findBySlug(songSlug)
-                .orElseThrow(() -> new SongNotFoundException("Песня не найдена"));
-
-        // Находим пользователя по username
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
-
-        // Создаем комментарий
-        SongComment comment = new SongComment();
-        comment.setContent(content);
-        comment.setSong(song);
-        comment.setUser(user);
-
-        songCommentRepository.save(comment);
-    }
-
-    public List<CommentDto> getCommentsForSong(String songId) {
-        List<SongComment> comments = songCommentRepository.findBySongIdWithUser(songId);
-
-        return comments.stream()
-                .map(comment -> mapper.map(comment,CommentDto.class))
-                .toList();
-    }
-
-    @Override
-    public Page<CommentDto> getUserComments(String userId, Pageable pageable) {
-        return null;
-    }
-
     @Override
     public CommentDto getCommentById(String commentId) {
         return songCommentRepository.findById(commentId)
                 .map(comment -> mapper.map(comment, CommentDto.class))
                 .orElseThrow(() -> new SongCommentNotFoundException("Комментарий с ID '" + commentId + "' не найден"));
-    }
-
-    @Override
-    public CommentDto updateComment(String commentId, String content, String userId) {
-        return null;
     }
 
     @Override
@@ -140,20 +100,6 @@ public class SongCommentServiceImpl implements SongCommentService {
         log.info("Комментарий удален: {}", commentId);
     }
 
-    @Override
-    public Long getCommentCountForSong(String songId) {
-        return 0L;
-    }
-
-    @Override
-    public Long getCommentCountForUser(String userId) {
-        return 0L;
-    }
-
-    @Override
-    public Page<CommentDto> getRecentComments(Pageable pageable) {
-        return null;
-    }
 
     @Override
     public Long getTotalCommentsCount() {
