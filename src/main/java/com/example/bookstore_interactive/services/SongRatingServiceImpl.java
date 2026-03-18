@@ -10,7 +10,6 @@ import com.example.bookstore_interactive.repositories.SongRepository;
 import com.example.bookstore_interactive.repositories.UserRepository;
 import com.example.bookstore_interactive.services.interfaces.SongRatingService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,17 +20,19 @@ import java.util.Optional;
 @Transactional
 public class SongRatingServiceImpl implements SongRatingService {
 
-    @Autowired
     private SongRatingRepository songRatingRepository;
-
-    @Autowired
     private SongRepository songRepository;
-
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private ModelMapper modelMapper;
+
+    public SongRatingServiceImpl(SongRatingRepository songRatingRepository,
+                                 SongRepository songRepository, UserRepository userRepository,
+                                  ModelMapper modelMapper) {
+        this.songRatingRepository = songRatingRepository;
+        this.songRepository = songRepository;
+        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     @Transactional
