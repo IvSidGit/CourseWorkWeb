@@ -28,7 +28,7 @@
                 </p>
                 <p><strong>Песни добавленные этим пользователем:</strong></p>
                 <div th:if="${#lists.isEmpty(userDetails.createdSongs)}">
-                    <p class="text-muted" style="font-style: italic; color: #6c757d;">
+                    <p class="text-muted">
                         Он еще не добавлял песен
                     </p>
                 </div>
@@ -41,8 +41,7 @@
                 </ul>
             </div>
             <div class="text-center">
-                <img src="/pic/user.png" alt="Профиль пользователя"
-                     style="width: 100%; max-width: 300px; border-radius: var(--pico-border-radius);">
+                <img src="/pic/user.png" alt="Профиль пользователя" style="width:250px">
             </div>
         </div>
     </article>

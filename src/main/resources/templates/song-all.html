@@ -4,27 +4,25 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <main class="container">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-        <hgroup style="margin: 0;">
+    <div>
+        <hgroup>
             <h1>Все песни</h1>
             <p>Просмотрите всех песен системы</p>
         </hgroup>
 
-        <form th:action="@{/songs/search}" method="get" style="display: inline;">
-            <input type="text" name="query" placeholder="Поиск песен..."
-                   style="padding: 0.3rem; border-radius: 4px;">
-            <button type="submit" class="outline" style="padding: 0.3rem 0.8rem;">🔍</button>
+        <form th:action="@{/songs/search}" method="get">
+            <input type="text" name="query" placeholder="Поиск песен...">
+            <button type="submit" class="outline">Поиск</button>
         </form>
         <button th:if="${#authorization.expression('isAuthenticated()')}"
-                onclick="window.location.href='/songs/add'"
-                style="margin: 0; flex-shrink: 0;">
+                onclick="window.location.href='/songs/add'">
             Добавить песню
         </button>
 
     </div>
 
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-        <div th:each="s : ${allSongs}" class="card" style="width: 100%;">
+    <div>
+        <div th:each="s : ${allSongs}" class="card">
             <h3 th:text="${s.title} + '(' + ${s.slug} +')' "></h3>
             <p><strong>Жанр:</strong> <span th:text="${s.genre}"></span></p>
             <p><strong>Аккорды:</strong>

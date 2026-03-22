@@ -9,13 +9,16 @@
 <main class="container">
     <section class="hero">
         <hgroup>
-            <h1>🎸 Гитарные песни</h1>
-            <h2>Крупнейшая база текстов песен с аккордами для гитары</h2>
+            <h1><img src="/pic/gutar.webp" style="border-radius: 2rem; width:50px"> Гитарные песни</h1>
+            <h2>Новая база текстов песен с аккордами для гитары</h2>
         </hgroup>
     </section>
 
+    <br>
+    <br>
+
     <section class="stats">
-        <h2>📊 Статистика сайта</h2>
+        <h2><img src="/pic/stat.webp" style="border-radius: 2rem; width:50px"> Статистика сайта</h2>
         <div class="grid">
             <div class="stat-card">
                 <h3 th:text="${stats.songsCount}">0</h3>
@@ -46,7 +49,7 @@
 
 
     <section class="quick-actions">
-        <h2>🚀 Быстрые действия</h2>
+        <h2><img src="/pic/speed.webp" style="border-radius: 2rem; width:50px"> Быстрые действия</h2>
         <div class="grid">
             <a href="/songs/all" role="button" class="secondary">Все песни</a>
             <a href="/artists/all" role="button" class="secondary">Все артисты</a>
@@ -61,7 +64,7 @@
     <div class="grid">
 
         <section>
-            <h2>🔥 Популярные песни</h2>
+            <h2><img src="/pic/popular.png" style="border-radius: 2rem; width:50px"> Популярные песни</h2>
             <div th:each="song : ${topPopularSongs}">
                 <article class="song-preview">
                     <h4>
@@ -84,7 +87,7 @@
 
 
         <section>
-            <h2>🆕 Новые песни</h2>
+            <h2><img src="/pic/new.png" style="border-radius: 2rem; width:50px"> Новые песни</h2>
             <div th:each="song : ${recentSongs}">
                 <article class="song-preview">
                     <h4>
@@ -107,7 +110,7 @@
 
 
     <section th:if="${!recentComments.isEmpty()}">
-        <h2>💬 Последние комментарии</h2>
+        <h2><img src="/pic/comm.png" style="border-radius: 2rem; width:50px"> Последние комментарии</h2>
         <div th:each="comment : ${recentComments}">
             <article class="comment-preview">
                 <p>
@@ -123,7 +126,7 @@
 
 
     <section class="cta">
-        <h2>🎶 Начните играть прямо сейчас!</h2>
+        <h2><img src="/pic/note.png" style="border-radius: 2rem; width:50px"> Начните играть прямо сейчас!</h2>
         <p>Выберите песню, аккорды которой хотите выучить, или добавьте свою любимую песню в нашу базу.</p>
         <a href="/songs/all" role="button">Найти песню</a>
         <a th:href="@{/songs/add}" sec:authorize="isAuthenticated()" role="button" class="contrast">
@@ -133,88 +136,5 @@
 </main>
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
-
-<style>
-    .hero {
-        text-align: center;
-        padding: 3rem 1rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 1rem;
-        margin-bottom: 2rem;
-    }
-
-    .hero h1 {
-        font-size: 3rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .hero h2 {
-        font-size: 1.5rem;
-        opacity: 0.9;
-        margin-bottom: 2rem;
-    }
-
-    .stats {
-        margin: 3rem 0;
-    }
-
-    .stat-card {
-        text-align: center;
-        padding: 1.5rem;
-        background: var(--card-background-color);
-        border-radius: 0.5rem;
-        border: 1px solid var(--card-border-color);
-    }
-
-    .stat-card h3 {
-        font-size: 2.5rem;
-        margin: 0;
-        color: var(--primary);
-    }
-
-    .stat-card p {
-        margin: 0.5rem 0 0;
-        color: var(--muted-color);
-    }
-
-    .song-preview, .artist-card, .comment-preview {
-        padding: 1rem;
-        margin-bottom: 1rem;
-        background: var(--card-background-color);
-        border-radius: 0.5rem;
-        border-left: 4px solid var(--primary);
-    }
-
-    .user-section {
-        background: var(--card-background-color);
-        padding: 2rem;
-        border-radius: 1rem;
-        margin: 2rem 0;
-    }
-
-    .quick-actions {
-        margin: 2rem 0;
-    }
-
-    .cta {
-        text-align: center;
-        padding: 3rem 1rem;
-        background: var(--card-background-color);
-        border-radius: 1rem;
-        margin: 3rem 0;
-    }
-
-    .cta h2 {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-    }
-
-    .cta p {
-        font-size: 1.2rem;
-        margin-bottom: 2rem;
-        opacity: 0.8;
-    }
-</style>
 </body>
 </html>

@@ -4,25 +4,25 @@
 <body>
 <div th:replace="fragments/navbar"></div>
 <main class="container">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-        <hgroup style="margin: 0;">
+
+        <hgroup>
             <h1>Все артисты</h1>
             <p>Просмотрите всех артистов системы</p>
         </hgroup>
 
-        <form th:action="@{/artists/search}" method="get" style="display: inline;">
+        <form th:action="@{/artists/search}" method="get">
             <input type="text" name="query" placeholder="Поиск артистов..."
-                   style="padding: 0.3rem; border-radius: 4px;">
-            <button type="submit" class="outline" style="padding: 0.3rem 0.8rem;">🔍</button>
+                   >
+            <button type="submit" class="outline" >Поиск</button>
         </form>
         <button th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'') or hasRole(''ROLE_MODERATOR'')')}"
                 onclick="window.location.href='/artists/add'"
-                style="margin: 0; flex-shrink: 0;">
+                >
             Добавить артиста
         </button>
     </div>
 
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
+    <div>
         <div th:each="a : ${allArtists}" class="card">
             <h3 th:text="${a.name}"></h3>
             <p><strong>Транскрипция:</strong> <span th:text="${a.slug}"></span></p>

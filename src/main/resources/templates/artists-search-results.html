@@ -11,18 +11,18 @@
   </hgroup>
 
   <div th:if="${searchResults == null or searchResults.isEmpty()}">
-    <article class="card" style="text-align: center; padding: 3rem;">
-      <p style="font-size: 1.5rem; margin-bottom: 1rem;">😕</p>
-      <p style="font-size: 1.2rem; color: #666;">Ничего не найдено</p>
+    <article class="card" >
+      <p>:(</p>
+      <p>Ничего не найдено</p>
       <p>Попробуйте изменить поисковый запрос</p>
-      <a th:href="@{/artists/all}" class="button" style="margin-top: 1rem;">Вернуться к списку артистов</a>
+      <a th:href="@{/artists/all}" class="button">Вернуться к списку артистов</a>
     </article>
   </div>
 
   <div th:if="${searchResults != null and !searchResults.isEmpty()}">
     <p>Найдено артистов: <span th:text="${searchResults.size()}"></span></p>
 
-    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem;">
+    <div>
       <div th:each="artist : ${searchResults}" class="card">
         <h3 th:text="${artist.name}"></h3>
         <p><strong>Транскрипция:</strong> <span th:text="${artist.slug}"></span></p>
@@ -35,7 +35,7 @@
         </a>
       </div>
     </div>
-    <a th:href="@{/artists/all}" class="button" style="margin-top: 1rem;">Вернуться к списку артистов</a>
+    <a th:href="@{/artists/all}" class="button">Вернуться к списку артистов</a>
   </div>
 </main>
 

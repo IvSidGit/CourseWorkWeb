@@ -90,7 +90,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     @Transactional
-    @CacheEvict(cacheNames = "artists", key="#artistSlug")
+    @CacheEvict(cacheNames = "artists", allEntries = true)
     public void deleteArtist(String artistSlug) {
         log.debug("Удаление артиста: {}", artistSlug);
 

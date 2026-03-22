@@ -9,8 +9,8 @@
         <p>Просмотрите всех пользователей системы</p>
     </hgroup>
 
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-        <div th:each="u : ${allUsers}" class="card" style="width: 100%;">
+    <div>
+        <div th:each="u : ${allUsers}" class="card">
             <h3 th:text="${u.username}"></h3>
             <p><strong>Роли на сайте:</strong>
                 <span th:each="role, stat : ${u.roles}">
