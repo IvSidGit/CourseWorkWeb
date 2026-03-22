@@ -23,6 +23,7 @@ public class ShowDetailedSongInfoDto {
     private Integer viewsCount;
     private Integer ratingTotal;
     private Integer ratingCount;
+    private Double averageRating;
     private LocalDateTime createdAt;
     private User createdBy;
     private List<SongComment> comments;

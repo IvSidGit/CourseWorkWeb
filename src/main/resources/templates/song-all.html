@@ -35,9 +35,7 @@
             </p>
             <p><strong>Рейтинг:</strong>
                 <span th:if="${s.ratingCount > 0}"
-                      th:text="${#numbers.formatDecimal(
-              s.ratingTotal / s.ratingCount,
-              1, 2)} + '⭐'">
+                      th:text="${#numbers.formatDecimal(s.averageRating,1, 2)} + '⭐'">
         </span>
                 <span th:unless="${s.ratingCount > 0}">Нет оценок</span>
             </p>

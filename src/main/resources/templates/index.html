@@ -75,7 +75,7 @@
                                    th:text="${song.artist.name}"></a> •
                             </span>
                             <span th:text="${song.viewsCount} + ' просмотров'"></span> •
-                            <span th:text="${song.ratingCount} + ' оценок'"></span>
+                            <span th:text="${#numbers.formatDecimal(song.averageRating,1, 2)} + '⭐ средняя оценка'"></span>
                         </small>
                     </p>
                 </article>
@@ -135,7 +135,6 @@
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
 <style>
-    /* Стили для главной страницы */
     .hero {
         text-align: center;
         padding: 3rem 1rem;

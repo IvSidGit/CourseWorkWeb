@@ -101,7 +101,18 @@ public class SongServiceImpl implements SongService {
     public List<ShowSongInfoDto> allSongs() {
         log.debug("Получение списка всех песен");
         List<ShowSongInfoDto> songs = songRepository.findAll().stream()
-                .map(song -> mapper.map(song, ShowSongInfoDto.class))
+                .map(song -> {
+                    ShowSongInfoDto dto = mapper.map(song, ShowSongInfoDto.class);
+
+                    if (song.getRatingCount() > 0) {
+                        double avgRating = (double) song.getRatingTotal() / song.getRatingCount();
+                        dto.setAverageRating(avgRating);
+                    } else {
+                        dto.setAverageRating(0.0);
+                    }
+
+                    return dto;
+                })
                 .collect(Collectors.toList());
         log.debug("Найдено песен: {}", songs.size());
         return songs;
@@ -127,6 +138,14 @@ public class SongServiceImpl implements SongService {
                 .orElseThrow(() -> new SongNotFoundException("Песня с ID '" + songId + "' не найдена"));
 
         ShowDetailedSongInfoDto showDetailedSongInfoDto = mapper.map(updatedSong, ShowDetailedSongInfoDto.class);
+
+        if (updatedSong.getRatingCount() > 0) {
+            double avgRating = (double) updatedSong.getRatingTotal() / updatedSong.getRatingCount();
+            showDetailedSongInfoDto.setAverageRating(avgRating);
+        } else {
+            showDetailedSongInfoDto.setAverageRating(0.0);
+        }
+
         showDetailedSongInfoDto.setComments(songCommentRepository.findBySongIdWithUser(songId));
         return showDetailedSongInfoDto;
     }
@@ -173,8 +192,18 @@ public class SongServiceImpl implements SongService {
     public List<ShowDetailedSongInfoDto> getTopPopularSongs(int limit) {
         return songRepository.getTopPopularSongs(5)
                 .stream()
-                .map(song -> mapper.map(song, ShowDetailedSongInfoDto.class))
-                .toList();
+                .map(song -> {
+                    ShowDetailedSongInfoDto dto = mapper.map(song, ShowDetailedSongInfoDto.class);
+
+                    if (song.getRatingCount() > 0) {
+                        double avgRating = (double) song.getRatingTotal() / song.getRatingCount();
+                        dto.setAverageRating(avgRating);
+                    } else {
+                        dto.setAverageRating(0.0);
+                    }
+
+                    return dto;
+                }).toList();
     }
 
     @Override

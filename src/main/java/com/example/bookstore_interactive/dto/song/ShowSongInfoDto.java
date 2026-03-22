@@ -15,6 +15,7 @@ public class ShowSongInfoDto {
     private String[] chordsList;
     private Integer ratingTotal;
     private Integer ratingCount;
+    private Double averageRating;
     private LocalDateTime createdAt;
     private String artistName;
 }

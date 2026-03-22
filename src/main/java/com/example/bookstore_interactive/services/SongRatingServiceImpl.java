@@ -10,6 +10,7 @@ import com.example.bookstore_interactive.repositories.SongRepository;
 import com.example.bookstore_interactive.repositories.UserRepository;
 import com.example.bookstore_interactive.services.interfaces.SongRatingService;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,7 @@ public class SongRatingServiceImpl implements SongRatingService {
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "songs", allEntries = true)
     public RatingDto addOrUpdateRating(AddRatingDto ratingDto, String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
@@ -90,6 +92,7 @@ public class SongRatingServiceImpl implements SongRatingService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "songs", allEntries = true)
     public void deleteRating(String songId, String userId) {
         SongRating rating = songRatingRepository.findBySongIdAndUserId(songId, userId)
                 .orElseThrow(() -> new RuntimeException("Оценка не найдена"));
