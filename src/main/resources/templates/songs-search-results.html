@@ -36,7 +36,7 @@
         </p>
         <p><strong>Рейтинг:</strong>
           <span th:if="${song.ratingCount > 0}"
-                th:text="${#numbers.formatDecimal(song.ratingTotal / song.ratingCount, 1, 2)} + '⭐'">
+                th:text="${#numbers.formatDecimal(song.ratingTotal*1.0 / song.ratingCount, 1, 2)} + '⭐'">
     </span>
           <span th:unless="${song.ratingCount > 0}">Нет оценок</span>
         </p>
