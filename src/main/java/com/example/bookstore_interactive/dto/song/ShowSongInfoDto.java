@@ -1,11 +1,9 @@
 package com.example.bookstore_interactive.dto.song;
 
-import com.example.bookstore_interactive.models.entities.Artist;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter

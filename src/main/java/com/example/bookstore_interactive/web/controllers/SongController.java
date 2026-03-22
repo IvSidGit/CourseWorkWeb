@@ -1,6 +1,5 @@
 package com.example.bookstore_interactive.web.controllers;
 
-import com.example.bookstore_interactive.dto.comment.AddCommentDto;
 import com.example.bookstore_interactive.dto.rating.AddRatingDto;
 import com.example.bookstore_interactive.dto.rating.RatingDto;
 import com.example.bookstore_interactive.dto.song.AddSongDto;
@@ -67,7 +66,7 @@ public class SongController {
     public String addSong(@Valid AddSongDto songModel,
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes,
-                          Authentication authentication) { // ДОБАВЬТЕ ЭТОТ ПАРАМЕТР
+                          Authentication authentication) {
 
         log.debug("Обработка добавления песни: {}", songModel.getTitle());
 
@@ -79,14 +78,11 @@ public class SongController {
             return "redirect:/songs/add";
         }
 
-        // Получаем имя текущего пользователя
         String username = authentication.getName();
 
-        // Находим пользователя по имени
         User currentUser = userService.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 
-        // Устанавливаем userId в DTO
         songModel.setUserId(currentUser.getId());
 
         songService.addSong(songModel);
@@ -106,7 +102,6 @@ public class SongController {
         ShowDetailedSongInfoDto songDetails = songService.songInfo(songSlug);
         model.addAttribute("songDetails", songDetails);
 
-        // Проверяем, оценил ли пользователь песню
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
             User user = userService.findByUsername(username).orElse(null);
@@ -142,15 +137,12 @@ public class SongController {
         ratingDto.setSongId(songId);
         ratingDto.setRating(rating);
 
-        // Сохраняем оценку
         songRatingService.addOrUpdateRating(ratingDto, user.getId());
 
-        // Получаем песню с ОБНОВЛЕННЫМИ данными
         Song song = songRepository.findById(songId)
                 .orElseThrow(() -> new RuntimeException("Песня не найдена"));
 
-        // Явно обновляем кэш Hibernate
-        songRepository.saveAndFlush(song); // Используйте saveAndFlush вместо flush
+        songRepository.saveAndFlush(song);
 
         return "redirect:/songs/song-details/" + song.getSlug();
     }

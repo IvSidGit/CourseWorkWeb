@@ -65,7 +65,6 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new UsernameNotFoundException(username + " was not found!"));
     }
 
-    // В сервисе
     @Override
     @Transactional(readOnly = true)
     public UserProfileView getUserProfile(String userId) {

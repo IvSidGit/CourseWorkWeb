@@ -14,18 +14,14 @@ public interface SongService {
 
     ShowDetailedSongInfoDto songInfo(String songSlug);
 
-    // Удаление песни
     void deleteSong(String songId);
-
 
     String getRandomSlug();
 
-    // Статистика
     Long getTotalSongsCount();
     Long getTotalViewsCount();
     Double getAverageRating();
 
-    // Топ контент
     List<ShowDetailedSongInfoDto> getTopPopularSongs(int limit);
     List<ShowDetailedSongInfoDto> getRecentSongs(int limit);
 

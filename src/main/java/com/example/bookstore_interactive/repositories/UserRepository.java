@@ -11,12 +11,11 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
-    // Базовые методы
     Optional<User> findByUsername(String username);
 
     Optional<User> findByEmail(String email);
 
-    // Получение пользователя с добавленными песнями (через JOIN)
+    // Получение пользователя с добавленными песнями
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.createdSongs WHERE u.id = :userId")
     Optional<User> findWithAddedSongs(@Param("userId") String userId);
 

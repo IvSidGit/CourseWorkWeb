@@ -1,15 +1,10 @@
 package com.example.bookstore_interactive.web.controllers;
 
 import org.springframework.ui.Model;
-import com.example.bookstore_interactive.dto.artist.AddArtistDto;
 import com.example.bookstore_interactive.dto.comment.AddCommentDto;
-import com.example.bookstore_interactive.repositories.SongCommentRepository;
 import com.example.bookstore_interactive.services.interfaces.SongCommentService;
-import com.example.bookstore_interactive.services.interfaces.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -57,15 +52,15 @@ public class SongCommentController {
     @PostMapping("/add")
     public String addComment(@Valid @ModelAttribute("commentModel") AddCommentDto commentModel,
                              BindingResult bindingResult,
-                             Model model, // ← добавить Model для возврата на форму
+                             Model model,
                              RedirectAttributes redirectAttributes) {
 
         log.debug("Обработка POST запроса на добавление комментария: {}", commentModel);
 
         if (bindingResult.hasErrors()) {
             log.warn("Ошибки валидации: {}", bindingResult.getAllErrors());
-            // Возвращаем на форму с ошибками
-            return "comment-add"; // ← не редирект, а возврат шаблона!
+
+            return "comment-add";
         }
 
         songCommentService.addComment(commentModel);

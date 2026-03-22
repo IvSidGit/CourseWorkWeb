@@ -7,7 +7,6 @@
 <div th:replace="fragments/navbar"></div>
 
 <main class="container">
-    <!-- Hero секция -->
     <section class="hero">
         <hgroup>
             <h1>🎸 Гитарные песни</h1>
@@ -15,11 +14,9 @@
         </hgroup>
     </section>
 
-    <!-- Статистика сайта -->
     <section class="stats">
         <h2>📊 Статистика сайта</h2>
         <div class="grid">
-            <!-- Переменные из контроллера: -->
             <div class="stat-card">
                 <h3 th:text="${stats.songsCount}">0</h3>
                 <p>Песен в базе</p>
@@ -47,7 +44,7 @@
         </div>
     </section>
 
-    <!-- Быстрые действия -->
+
     <section class="quick-actions">
         <h2>🚀 Быстрые действия</h2>
         <div class="grid">
@@ -60,9 +57,9 @@
         </div>
     </section>
 
-    <!-- Топ контент -->
+
     <div class="grid">
-        <!-- Самые популярные песни -->
+
         <section>
             <h2>🔥 Популярные песни</h2>
             <div th:each="song : ${topPopularSongs}">
@@ -85,7 +82,7 @@
             </div>
         </section>
 
-        <!-- Последние добавленные -->
+
         <section>
             <h2>🆕 Новые песни</h2>
             <div th:each="song : ${recentSongs}">
@@ -108,7 +105,7 @@
         </section>
     </div>
 
-    <!-- Последние комментарии -->
+
     <section th:if="${!recentComments.isEmpty()}">
         <h2>💬 Последние комментарии</h2>
         <div th:each="comment : ${recentComments}">
@@ -124,7 +121,7 @@
         </div>
     </section>
 
-    <!-- Call to action -->
+
     <section class="cta">
         <h2>🎶 Начните играть прямо сейчас!</h2>
         <p>Выберите песню, аккорды которой хотите выучить, или добавьте свою любимую песню в нашу базу.</p>

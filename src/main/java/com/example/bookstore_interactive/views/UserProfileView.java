@@ -1,7 +1,6 @@
 package com.example.bookstore_interactive.views;
 
 import com.example.bookstore_interactive.dto.song.ShowSongInfoDto;
-import com.example.bookstore_interactive.models.entities.Song;
 import lombok.Getter;
 import lombok.Setter;
 

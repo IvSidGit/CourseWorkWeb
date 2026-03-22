@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,10 +20,4 @@ public interface SongRatingRepository extends JpaRepository<SongRating, String> 
     // Получение средней оценки песни
     @Query("SELECT COALESCE(AVG(sr.rating), 0) FROM SongRating sr WHERE sr.song.id = :songId")
     Double getAverageRatingBySongId(@Param("songId") String songId);
-
-    // Количество оценок для песни
-    Long countBySongId(String songId);
-
-    // Все оценки для песни
-    List<SongRating> findBySongId(String songId);
 }

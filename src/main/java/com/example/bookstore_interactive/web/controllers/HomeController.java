@@ -35,7 +35,6 @@ public class HomeController {
     public String home(Model model, Principal principal) {
         log.debug("Отображение главной страницы");
 
-        // 1. Общая статистика
         HomeStatsDto stats = new HomeStatsDto();
         stats.setSongsCount(songService.getTotalSongsCount());
         stats.setArtistsCount(artistService.getTotalArtistsCount());
@@ -46,11 +45,11 @@ public class HomeController {
 
         model.addAttribute("stats", stats);
 
-        // 2. Топ контент
+
         model.addAttribute("topPopularSongs", songService.getTopPopularSongs(5));
         model.addAttribute("recentSongs", songService.getRecentSongs(5));
 
-        // 3. Последние комментарии
+
         model.addAttribute("recentComments", commentService.getRecentComments(3));
 
 

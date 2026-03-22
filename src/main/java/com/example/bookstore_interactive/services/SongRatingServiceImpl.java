@@ -56,7 +56,6 @@ public class SongRatingServiceImpl implements SongRatingService {
             existingRating.setRating(newRating);
             savedRating = songRatingRepository.save(existingRating);
 
-            // Прямое обновление в БД
             int newTotal = song.getRatingTotal() - oldRating + newRating;
             songRepository.updateRatingStats(song.getId(), song.getRatingCount(), newTotal);
 
@@ -67,7 +66,6 @@ public class SongRatingServiceImpl implements SongRatingService {
             rating.setRating(ratingDto.getRating());
             savedRating = songRatingRepository.save(rating);
 
-            // Прямое обновление в БД
             int newCount = song.getRatingCount() + 1;
             int newTotal = song.getRatingTotal() + ratingDto.getRating();
             songRepository.updateRatingStats(song.getId(), newCount, newTotal);
@@ -98,7 +96,6 @@ public class SongRatingServiceImpl implements SongRatingService {
 
         Song song = rating.getSong();
 
-        // Обновляем статистику песни
         song.setRatingCount(song.getRatingCount() - 1);
         song.setRatingTotal(song.getRatingTotal() - rating.getRating());
         song.setUpdatedAt(LocalDateTime.now());

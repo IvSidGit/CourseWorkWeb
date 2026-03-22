@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface UserService {
 
-    // Основные CRUD операции
     List<ShowUserInfoDto> allUsers();
 
     ShowDetailedUserInfoDto userInfo(String username);

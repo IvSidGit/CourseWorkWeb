@@ -47,31 +47,26 @@ public class SongCommentServiceImpl implements SongCommentService {
     public void addComment(AddCommentDto commentDTO) {
         log.debug("Добавление нового комментария");
         log.debug("Полученный AddCommentDto: {}", commentDTO);
-        log.debug("Content из DTO: {}", commentDTO.getContent()); // ← Добавьте эту строку!
+        log.debug("Content из DTO: {}", commentDTO.getContent());
 
-        // Проверка, что content не null
         if (commentDTO.getContent() == null || commentDTO.getContent().trim().isEmpty()) {
             log.error("Content is null or empty in AddCommentDto: {}", commentDTO);
             throw new IllegalArgumentException("Текст комментария не может быть пустым");
         }
 
-        // Создаем комментарий
         SongComment comment = new SongComment();
-        comment.setContent(commentDTO.getContent()); // ← ВАЖНО: устанавливаем content!
+        comment.setContent(commentDTO.getContent());
         comment.setCreatedAt(LocalDateTime.now());
         comment.setUpdatedAt(LocalDateTime.now());
 
-        // Находим песню
         Song song = songRepository.findBySlug(commentDTO.getSongSlug())
                 .orElseThrow(() -> new SongNotFoundException("Песня с slug '" + commentDTO.getSongSlug() + "' не найдена"));
         comment.setSong(song);
 
-        // Находим пользователя
         User user = userRepository.findByUsername(commentDTO.getUsername())
                 .orElseThrow(() -> new UserNotFoundException("Пользователь с username '" + commentDTO.getUsername() + "' не найден"));
         comment.setUser(user);
 
-        // Сохраняем
         songCommentRepository.save(comment);
         log.info("Комментарий успешно добавлен для песни: {}, пользователем: {}",
                 commentDTO.getSongSlug(), commentDTO.getUsername());

@@ -14,13 +14,4 @@ public class ShowUserInfoDto {
     private String email;
     private List<ShowSongInfoDto> createdSongs;
     private List<Role> roles;
-
-    public ShowUserInfoDto(String username, String email, List<ShowSongInfoDto> createdSongs) {
-        this.username = username;
-        this.email = email;
-        this.createdSongs = createdSongs;
-    }
-
-    public ShowUserInfoDto() {
-    }
 }

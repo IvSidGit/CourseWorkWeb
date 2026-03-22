@@ -12,9 +12,4 @@ public class HomeStatsDto {
     private Long totalViews;          // Общее количество просмотров
     private Double averageRating;     // Средний рейтинг всех песен
     private Long totalComments;       // Общее количество комментариев
-
-    // Можно добавить другие статистические данные:
-    // private Long songsAddedThisWeek; // Песен добавлено за неделю
-    // private Long activeUsersToday;   // Активных пользователей сегодня
-    // private Map<String, Long> songsByGenre; // Распределение по жанрам
 }

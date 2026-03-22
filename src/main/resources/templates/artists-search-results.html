@@ -10,7 +10,6 @@
     <p th:if="${searchQuery}">По запросу: <strong>"[[${searchQuery}]]"</strong></p>
   </hgroup>
 
-  <!-- Если результатов нет -->
   <div th:if="${searchResults == null or searchResults.isEmpty()}">
     <article class="card" style="text-align: center; padding: 3rem;">
       <p style="font-size: 1.5rem; margin-bottom: 1rem;">😕</p>
@@ -20,7 +19,6 @@
     </article>
   </div>
 
-  <!-- Если есть результаты -->
   <div th:if="${searchResults != null and !searchResults.isEmpty()}">
     <p>Найдено артистов: <span th:text="${searchResults.size()}"></span></p>
 
@@ -29,7 +27,7 @@
         <h3 th:text="${artist.name}"></h3>
         <p><strong>Транскрипция:</strong> <span th:text="${artist.slug}"></span></p>
         <p><strong>Год начала карьеры:</strong> <span th:text="${artist.careerStartYear}"></span></p>
-        <!-- УБРАЛИ поле description, так как его нет в DTO -->
+
         <a th:href="@{/artists/artist-details/{slug}(slug=${artist.slug})}"
            role="button"
            class="outline">

@@ -1,16 +1,11 @@
 package com.example.bookstore_interactive.models.entities;
 
 import com.example.bookstore_interactive.utils.validation.NotFutureYear;
-import com.example.bookstore_interactive.utils.validation.UniqueEmail;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDateTime;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 

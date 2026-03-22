@@ -6,7 +6,6 @@ import com.example.bookstore_interactive.models.entities.Role;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -26,8 +25,5 @@ public class ShowDetailedUserInfoDto {
         this.age = age;
         this.createdSongs = createdSongs;
         this.roles = roles;
-    }
-
-    public ShowDetailedUserInfoDto() {
     }
 }

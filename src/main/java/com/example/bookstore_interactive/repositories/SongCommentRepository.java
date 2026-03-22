@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public interface SongCommentRepository extends JpaRepository<SongComment, String> {
@@ -22,7 +21,6 @@ public interface SongCommentRepository extends JpaRepository<SongComment, String
     void deleteById(String commentId);
     Optional<SongComment> findById(String commentId);
 
-    // Или если вам нужны комментарии для конкретной песни
     @Query("SELECT c FROM SongComment c JOIN FETCH c.user u WHERE c.song.id = :songId ORDER BY c.createdAt DESC")
     List<SongComment> findBySongIdWithUser(@Param("songId") String songId);
 

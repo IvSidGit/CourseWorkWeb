@@ -36,7 +36,7 @@ public class AppSecurityConfiguration {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/favicon.ico", "/error").permitAll()
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
-                        .requestMatchers("/actuator/**").permitAll() // Для демо; в production настроить безопасность
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/users/profile").authenticated()
                         .requestMatchers("/employees/add", "/employees/employee-delete/*")
                         .hasAnyRole(UserRoles.MODERATOR.name(), UserRoles.ADMIN.name())
@@ -53,7 +53,7 @@ public class AppSecurityConfiguration {
                         .permitAll()
                 )
                 .rememberMe(remember -> remember
-                        .key("uniqueAndSecret") // В production использовать секрет из конфигурации
+                        .key("uniqueAndSecret")
                         .tokenValiditySeconds(86400 * 7) // 7 дней
                         .userDetailsService(userDetailsService())
                         .rememberMeParameter("remember-me")
@@ -69,7 +69,7 @@ public class AppSecurityConfiguration {
                         .securityContextRepository(securityContextRepository)
                 )
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/actuator/**") // Для демо
+                        .ignoringRequestMatchers("/actuator/**")
                 );
 
         log.info("SecurityFilterChain настроен");

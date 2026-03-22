@@ -7,13 +7,10 @@ import java.util.List;
 
 public interface SongCommentService {
 
-    // Добавление комментария к песне
     void addComment(AddCommentDto commentDto);
 
-    // Получение комментария по ID
     CommentDto getCommentById(String commentId);
 
-    // Удаление комментария
     void deleteComment(String commentId);
 
     Long getTotalCommentsCount();

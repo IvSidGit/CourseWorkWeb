@@ -10,7 +10,7 @@
     <p th:if="${searchQuery}">По запросу: <strong>"[[${searchQuery}]]"</strong></p>
   </hgroup>
 
-  <!-- Если результатов нет -->
+
   <div th:if="${searchResults == null or searchResults.isEmpty()}">
     <article class="card" style="text-align: center; padding: 3rem;">
       <p style="font-size: 1.5rem; margin-bottom: 1rem;">😕</p>
@@ -20,7 +20,7 @@
     </article>
   </div>
 
-  <!-- Если есть результаты -->
+
   <div th:if="${searchResults != null and !searchResults.isEmpty()}">
     <p>Найдены песни: <span th:text="${searchResults.size()}"></span></p>
 
