@@ -4,8 +4,10 @@ import com.example.bookstore_interactive.dto.rating.AddRatingDto;
 import com.example.bookstore_interactive.dto.rating.RatingDto;
 import com.example.bookstore_interactive.dto.song.AddSongDto;
 import com.example.bookstore_interactive.dto.song.ShowDetailedSongInfoDto;
+import com.example.bookstore_interactive.models.entities.Role;
 import com.example.bookstore_interactive.models.entities.Song;
 import com.example.bookstore_interactive.models.entities.User;
+import com.example.bookstore_interactive.models.exceptions.SongNotFoundException;
 import com.example.bookstore_interactive.repositories.SongRepository;
 import com.example.bookstore_interactive.services.interfaces.ArtistService;
 import com.example.bookstore_interactive.services.interfaces.SongRatingService;
@@ -19,6 +21,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Arrays;
 
 @Slf4j
 @Controller
@@ -53,8 +57,107 @@ public class SongController {
         log.debug("Отображение формы добавления песни");
         model.addAttribute("availableArtists", artistService.allArtists());
         model.addAttribute("availableUsers", userService.allUsers());
+        model.addAttribute("isEdit", false); // Флаг для определения режима
+        model.addAttribute("formAction", "/songs/add");
 
-        return "song-add";
+        return "song-form";
+    }
+
+    @GetMapping("/edit/{songId}")
+    public String editSongForm(@PathVariable("songId") String songId,
+                               Model model,
+                               Authentication authentication) {
+        log.debug("Отображение формы редактирования песни: {}", songId);
+
+        Song song = songRepository.findById(songId)
+                .orElseThrow(() -> new SongNotFoundException("Песня не найдена"));
+
+        // Проверяем права доступа
+        String username = authentication.getName();
+        User currentUser = userService.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+
+        boolean canEdit = false;
+
+        for (Role r: currentUser.getRoles()) {
+            canEdit = r.getName().equals("ADMIN") ||
+                    r.getName().equals("MODERATOR") ||
+                    (song.getCreatedBy() != null &&
+                            song.getCreatedBy().getId().equals(currentUser.getId()));
+        }
+
+
+        if (!canEdit) {
+            log.warn("Пользователь {} пытается редактировать песню {}, но не имеет прав",
+                    username, songId);
+            return "redirect:/songs/song-details/" + song.getSlug() + "?error=access_denied";
+        }
+
+        // Заполняем DTO данными из существующей песни
+        AddSongDto songDto = new AddSongDto();
+        songDto.setTitle(song.getTitle());
+        songDto.setContent(song.getContent());
+        songDto.setGenre(song.getGenre());
+        songDto.setCapo(song.getCapo());
+        songDto.setArtistId(song.getArtist() != null ? song.getArtist().getId() : null);
+
+        if (song.getChordsList() != null) {
+            songDto.setChordsList(Arrays.asList(song.getChordsList()));
+        }
+
+        model.addAttribute("songModel", songDto);
+        model.addAttribute("songId", songId);
+        model.addAttribute("availableArtists", artistService.allArtists());
+        model.addAttribute("availableUsers", userService.allUsers());
+        model.addAttribute("isEdit", true); // Флаг для определения режима
+        model.addAttribute("formAction", "/songs/edit/" + songId);
+
+        return "song-form";
+    }
+
+    @PostMapping("/edit/{songId}")
+    public String updateSong(@PathVariable("songId") String songId,
+                             @Valid @ModelAttribute("songModel") AddSongDto songDto,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes,
+                             Authentication authentication) {
+
+        log.debug("Обработка обновления песни: {}", songId);
+
+        if (bindingResult.hasErrors()) {
+            log.warn("Ошибки валидации при обновлении песни: {}", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("songModel", songDto);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.songModel",
+                    bindingResult);
+            return "redirect:/songs/edit/" + songId;
+        }
+
+        // Проверяем права доступа
+        Song existingSong = songRepository.findById(songId)
+                .orElseThrow(() -> new SongNotFoundException("Песня не найдена"));
+
+        String username = authentication.getName();
+        User currentUser = userService.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+
+        boolean canEdit = false;
+        for (Role r: currentUser.getRoles()) {
+            canEdit = r.getName().equals("ADMIN") ||
+                    r.getName().equals("MODERATOR") ||
+                    (existingSong.getCreatedBy() != null &&
+                            existingSong.getCreatedBy().getId().equals(currentUser.getId()));
+        }
+
+        if (!canEdit) {
+            log.warn("Пользователь {} пытается обновить песню {}, но не имеет прав",
+                    username, songId);
+            return "redirect:/songs/song-details/" + existingSong.getSlug() + "?error=access_denied";
+        }
+
+        songService.updateSong(songId, songDto);
+        log.info("Песня успешно обновлена: {}", songId);
+
+        return "redirect:/songs/song-details/" + existingSong.getSlug();
     }
 
     @ModelAttribute("songModel")
@@ -63,7 +166,7 @@ public class SongController {
     }
 
     @PostMapping("/add")
-    public String addSong(@Valid AddSongDto songModel,
+    public String addSong(@Valid @ModelAttribute("songModel") AddSongDto songModel,
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes,
                           Authentication authentication) {
@@ -79,7 +182,6 @@ public class SongController {
         }
 
         String username = authentication.getName();
-
         User currentUser = userService.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 

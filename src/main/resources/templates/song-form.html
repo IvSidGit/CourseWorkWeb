@@ -6,13 +6,17 @@
 <main class="container">
     <article style="max-width: 900px; margin: 0 auto;">
         <hgroup>
-            <h1>Добавление песни</h1>
-            <p>Заполните информацию о песне</p>
+            <h1 th:if="${!isEdit}">Добавление песни</h1>
+            <h1 th:if="${isEdit}">Редактирование песни</h1>
+            <p th:if="${!isEdit}">Заполните информацию о песне</p>
+            <p th:if="${isEdit}">Измените информацию о песне</p>
         </hgroup>
-        <form th:action="@{/songs/add}"
+
+        <form th:action="@{${formAction}}"
               th:method="post"
               th:object="${songModel}">
 
+            <input type="hidden" th:if="${isEdit}" th:name="songId" th:value="${songId}"/>
 
             <label for="title">
                 Название
@@ -42,8 +46,7 @@
                        th:errorclass="is-invalid"
                        type="text"
                        id="genre"
-                       placeholder="Введите жанр"
-                       />
+                       placeholder="Введите жанр"/>
                 <small th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}" class="text-danger"></small>
             </label>
 
@@ -66,8 +69,7 @@
                 <input th:field="*{chordsList}"
                        type="text"
                        id="chordsList"
-                       placeholder="Например: Am, C, G, D, F"
-                       />
+                       placeholder="Например: Am, C, G, D, F"/>
                 <small>Введите аккорды через запятую. Например: Am, C, G, D</small>
                 <small th:if="${#fields.hasErrors('chordsList')}" th:errors="*{chordsList}" class="text-danger"></small>
             </label>
@@ -77,13 +79,21 @@
                 <textarea th:field="*{content}"
                           th:errorclass="is-invalid"
                           id="content"
-                          rows="8"
+                          rows="12"
                           placeholder="Введите текст песни..."
                           required></textarea>
                 <small th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-danger"></small>
             </label>
 
-            <button type="submit">Добавить песню</button>
+            <div class="grid">
+                <button type="submit">
+                    <span th:if="${!isEdit}">Добавить песню</span>
+                    <span th:if="${isEdit}">Сохранить изменения</span>
+                </button>
+                <a th:href="@{/songs/all}"
+                   role="button"
+                   class="secondary">Отмена</a>
+            </div>
         </form>
     </article>
 </main>

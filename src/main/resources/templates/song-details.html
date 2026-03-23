@@ -127,10 +127,16 @@
                     <div th:if="${#authorization.expression('hasAnyRole(''ADMIN'', ''MODERATOR'')') or
                   (songDetails.createdBy != null and
                    songDetails.createdBy.username == #authentication.name)}">
+                        <a th:href="@{/songs/edit/{id}(id=${songDetails.id})}"
+                           role="button"
+                           class="outline"
+                           style="width: 300px; height:50px;display: inline-flex; align-items: center; justify-content: center; margin-bottom:10px;">
+                            Редактировать песню
+                        </a>
                         <form th:action="@{/songs/song-delete/{id}(id=${songDetails.id})}"
                               th:method="delete"
                               onsubmit="return confirm('Вы уверены, что хотите удалить эту песню?')">
-                            <button type="submit" class="secondary">Удалить песню</button>
+                            <button type="submit" class="secondary" style="width: 300px; height:50px; display: inline-flex; align-items: center; justify-content: center;">Удалить песню</button>
                         </form>
                     </div>
                 </div>

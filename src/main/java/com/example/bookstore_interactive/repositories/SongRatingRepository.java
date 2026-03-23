@@ -16,8 +16,4 @@ public interface SongRatingRepository extends JpaRepository<SongRating, String> 
 
     // Получение оценки пользователя для песни
     Optional<SongRating> findBySongIdAndUserId(String songId, String userId);
-
-    // Получение средней оценки песни
-    @Query("SELECT COALESCE(AVG(sr.rating), 0) FROM SongRating sr WHERE sr.song.id = :songId")
-    Double getAverageRatingBySongId(@Param("songId") String songId);
 }

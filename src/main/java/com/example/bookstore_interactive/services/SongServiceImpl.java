@@ -213,4 +213,37 @@ public class SongServiceImpl implements SongService {
                 .map(song -> mapper.map(song, ShowDetailedSongInfoDto.class))
                 .toList();
     }
+
+    @Override
+    @Transactional
+    @CacheEvict(cacheNames = "songs", allEntries = true)
+    public void updateSong(String songId, AddSongDto songDto) {
+        log.debug("Обновление песни: {}", songId);
+
+        Song song = songRepository.findById(songId)
+                .orElseThrow(() -> new SongNotFoundException("Песня с ID '" + songId + "' не найдена"));
+
+        song.setTitle(songDto.getTitle());
+        song.setContent(songDto.getContent());
+        song.setGenre(songDto.getGenre());
+        song.setCapo(songDto.getCapo() != null ? songDto.getCapo() : 0);
+
+        if (songDto.getChordsList() != null && !songDto.getChordsList().isEmpty()) {
+            song.setChordsList(songDto.getChordsList().toArray(new String[0]));
+        } else {
+            song.setChordsList(null);
+        }
+
+        if (songDto.getArtistId() != null && !songDto.getArtistId().isEmpty()) {
+            Artist artist = artistRepository.findById(songDto.getArtistId())
+                    .orElseThrow(() -> new RuntimeException("Артист с ID '" + songDto.getArtistId() + "' не найден"));
+            song.setArtist(artist);
+        } else {
+            song.setArtist(null);
+        }
+
+        songRepository.save(song);
+        log.info("Песня успешно обновлена: {}", songId);
+    }
+
 }
