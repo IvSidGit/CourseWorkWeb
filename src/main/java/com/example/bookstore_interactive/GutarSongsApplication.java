@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WebSpring5Application {
+public class GutarSongsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WebSpring5Application.class, args);
+		SpringApplication.run(GutarSongsApplication.class, args);
 	}
 
 }

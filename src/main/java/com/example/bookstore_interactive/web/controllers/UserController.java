@@ -29,12 +29,6 @@ public class UserController {
         return "user-all";
     }
 
-    @GetMapping("/add")
-    public String addArtist() {
-        log.debug("Отображение формы добавления пользователя");
-        return "user-add";
-    }
-
     @GetMapping("/user-details/{username}")
     public String showUserDetails(@PathVariable("username") String username, Model model) {
         log.debug("Отображение деталей пользователя: {}", username);
